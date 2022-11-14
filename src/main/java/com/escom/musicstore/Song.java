@@ -1,6 +1,9 @@
 package com.escom.musicstore;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import org.jaudiotagger.tag.TagField;
 
 public class Song extends javax.swing.JPanel {
     
@@ -8,13 +11,17 @@ public class Song extends javax.swing.JPanel {
     int price;
     
 
-    public Song(String Name, int Price) {
+    public Song(String Name, ImageIcon image, int Price) {
         initComponents();
         this.name = Name;
         this.price = Price;
+        //this.songImage.setIcon((Icon) image);
+        
         
         songName.setText(name);
         songPrice.setText("$ " + price + " MXN");
+        //if(image.get)
+        songImage.setIcon(image);
     }
 
     public String getName() {

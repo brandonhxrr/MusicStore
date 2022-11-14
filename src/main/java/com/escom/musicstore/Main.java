@@ -1,20 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.escom.musicstore;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.TagField;
 
-/**
- *
- * @author escom
- */
 public class Main extends javax.swing.JFrame {
+    static ImageIcon icon;
+    public static List<Song> carrito;
 
    private List<Song> canciones;
    int index = 0;
@@ -26,6 +35,8 @@ public class Main extends javax.swing.JFrame {
         index = 0;
         
         listSongs();
+        
+        carrito = new ArrayList<Song>();
         
     }
 
@@ -113,38 +124,65 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewCartActionPerformed
-        Song s = new Song("Hola", index);
-        s.getBtnAdd().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            }
-        });
-        songs.add(s);
-        canciones.add(s);
-        index++;
-        songs.updateUI();
+       ViewCart viewCart = new ViewCart();
+       viewCart.setVisible(true);
     }//GEN-LAST:event_btnViewCartActionPerformed
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFinishActionPerformed
 
-    private void listSongs() {
-        File ruta = new File("src\\main\\java\\canciones");
+    private void listSongs(){
+        //File ruta = new File("src\\main\\java\\canciones");
+        File ruta = new File("src/main/java/canciones/");
         System.out.println(ruta.getAbsolutePath());
         File[] listaCanciones = ruta.listFiles();
         
         for (int i = 0; i < listaCanciones.length; i++) {
-            Song s = new Song(listaCanciones[i].getName(), i);
+            System.out.println(listaCanciones[i].getAbsolutePath());
+            
+            Song s = null;
+            
+            try {
+                //s.getBtnAdd().addActionListener(l);
+                AudioFile f = AudioFileIO.read(listaCanciones[i]);
+                Tag tag = f.getTag();
+                //TagField binaryField = tag.getFirstField(FieldKey.COVER_ART);
+                icon = getArtwork(tag);
+                s = new Song(tag.getFirst(FieldKey.TITLE), icon, i);
+                
+                Song ss = s;
+                
+                s.getBtnAdd().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        carrito.add(ss);
+                    }
+                });
+                
+            } catch (Exception ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             songs.add(s);
             canciones.add(s);
             songs.updateUI();
-            
         }
-        
-       
     }
+    
+    public ImageIcon getArtwork(Tag tag) {
+        ImageIcon artwork;
+
+        try {
+            byte[] bytes = tag.getFirstArtwork().getBinaryData();
+           // ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            artwork = new ImageIcon(bytes);
+        } catch (Exception ex) {
+           artwork = new ImageIcon("src/main/java/images/album.jpg");
+        
+    }
+    return artwork;
+}
     
     public static void main(String args[]) {
 
