@@ -1,4 +1,4 @@
-package com.escom.musicstore;
+package MusicStore;
 
 public class ViewCart extends javax.swing.JFrame {
 

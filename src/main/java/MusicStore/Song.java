@@ -1,4 +1,4 @@
-package com.escom.musicstore;
+package MusicStore;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
