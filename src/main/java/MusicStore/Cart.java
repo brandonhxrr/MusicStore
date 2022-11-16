@@ -1,45 +1,22 @@
 package MusicStore;
 
+import static MusicStore.Main.carrito;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.KeyNotFoundException;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 
-public class Main extends javax.swing.JFrame {
+public class Cart extends javax.swing.JFrame {
     
     int x, y; 
     static ImageIcon icon;
-    public static List<SongData> carrito;
 
-    public Main() {
+    public Cart() {
         initComponents();
         
         close_btn.setIcon(new ImageIcon("src/main/java/icons/close_disabled.png")); 
         title.setIcon(new ImageIcon("src/main/java/icons/favicon.png")); 
         
-        
-        //listSongs();
-        
-        initClient();
-        
-        carrito = new ArrayList<>();
+        initCar();
         
     }
 
@@ -50,10 +27,10 @@ public class Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         close_btn = new javax.swing.JButton();
         title = new javax.swing.JLabel();
-        btnViewCart = new javax.swing.JButton();
         btnFinish = new javax.swing.JButton();
         scroll = new javax.swing.JScrollPane();
         songs = new javax.swing.JPanel();
+        btn_back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -95,13 +72,6 @@ public class Main extends javax.swing.JFrame {
         title.setFont(new java.awt.Font("Leelawadee UI", 1, 24)); // NOI18N
         title.setText("MusicStore");
 
-        btnViewCart.setText("Ver carrito");
-        btnViewCart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewCartActionPerformed(evt);
-            }
-        });
-
         btnFinish.setText("Finalizar compra");
         btnFinish.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,27 +84,42 @@ public class Main extends javax.swing.JFrame {
         songs.setLayout(new java.awt.GridLayout(0, 2));
         scroll.setViewportView(songs);
 
+        btn_back.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btn_back.setBorderPainted(false);
+        btn_back.setContentAreaFilled(false);
+        btn_back.setFocusable(false);
+        btn_back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_backMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_backMouseExited(evt);
+            }
+        });
+        btn_back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_backActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scroll, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 597, Short.MAX_VALUE)
-                                .addComponent(btnViewCart)
-                                .addGap(33, 33, 33)
-                                .addComponent(btnFinish)))
-                        .addGap(51, 51, 51))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(title)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
+                    .addComponent(btnFinish))
+                .addGap(51, 51, 51))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,13 +127,12 @@ public class Main extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(title)
-                    .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnViewCart)
-                    .addComponent(btnFinish))
+                .addComponent(btnFinish)
                 .addGap(37, 37, 37))
         );
 
@@ -166,11 +150,6 @@ public class Main extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnViewCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewCartActionPerformed
-       Cart v = new Cart();
-       v.setVisible(true);
-    }//GEN-LAST:event_btnViewCartActionPerformed
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
 
@@ -202,52 +181,37 @@ public class Main extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_close_btnActionPerformed
 
-    private void initClient(){
-         try {
-            Socket cl = new Socket("localhost", 3000);
-            System.out.println("Conexion con servidor exitosa.. preparado para recibir objeto..");
-            ObjectInputStream ois = new ObjectInputStream(cl.getInputStream());
-            
-            List<SongData> canciones = new ArrayList<>();
-            
-            canciones = (List) ois.readObject();
-            
-            for(SongData son : canciones){
-                Song s = new Song(son.getName(), son.getArtist(), son.getImage(), son.getPrice());
-                songs.add(s);
-                songs.updateUI();
+    private void btn_backMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_backMouseEntered
+
+    private void btn_backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_backMouseExited
+
+    private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_backActionPerformed
+
+    void initCar(){
+        
+        songs.removeAll();
+        songs.repaint();
+        
+        if(!Main.carrito.isEmpty()) {
+            for(SongData son : Main.carrito) {
                 
-                s.getBtnAdd().addActionListener((ActionEvent e) -> {
-                    if(!carrito.contains(son)){
-                        carrito.add(son);
-                    }
-                    
+                SongCart songCart = new SongCart(son.getName(), son.getArtist(), son.getImage(), son.getPrice(), son.getIndex());
+                
+                songCart.getBtnClose().addActionListener((ActionEvent e) -> {
+                    carrito.remove(son);
+                    initCar();
                 });
+                songs.add(songCart);
+                songs.updateUI();
             }
-            
-            
-            System.out.println("Objeto recibido desde " + cl.getInetAddress() + ":" + cl.getPort() + " con los datos:");
-            
-            ois.close();
-            cl.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
-        
-    public ImageIcon getArtwork(Tag tag) {
-        ImageIcon artwork;
-
-        try {
-            byte[] bytes = tag.getFirstArtwork().getBinaryData();
-           // ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-            artwork = new ImageIcon(bytes);
-        } catch (Exception ex) {
-           artwork = new ImageIcon("src/main/java/images/album.jpg");
-        
-    }
-    return artwork;
-}
     
     public static void main(String args[]) {
 
@@ -259,26 +223,27 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new Cart().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFinish;
-    private javax.swing.JButton btnViewCart;
+    private javax.swing.JButton btn_back;
     private javax.swing.JButton close_btn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scroll;
