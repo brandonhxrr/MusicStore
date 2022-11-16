@@ -24,7 +24,7 @@ public class SongCart extends javax.swing.JPanel {
         songPrice.setText("$ " + price + " MXN");
         songImage.setIcon(image);
         
-        close_btn.setIcon(new ImageIcon("src/main/java/icons/close_disabled.png"));
+        close_btn.setIcon(new ImageIcon("src/main/java/icons/delete_disabled.png"));
     }
     public String getArtist() {
         return artist;
@@ -144,11 +144,11 @@ public class SongCart extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void close_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_btnMouseEntered
-        close_btn.setIcon(new ImageIcon("src/main/java/icons/close_enabled.png"));
+        close_btn.setIcon(new ImageIcon("src/main/java/icons/delete_enabled.png"));
     }//GEN-LAST:event_close_btnMouseEntered
 
     private void close_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_btnMouseExited
-        close_btn.setIcon(new ImageIcon("src/main/java/icons/close_disabled.png"));
+        close_btn.setIcon(new ImageIcon("src/main/java/icons/delete_disabled.png"));
     }//GEN-LAST:event_close_btnMouseExited
 
     private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_close_btnActionPerformed

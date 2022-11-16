@@ -15,6 +15,7 @@ public class Cart extends javax.swing.JFrame {
         
         close_btn.setIcon(new ImageIcon("src/main/java/icons/close_disabled.png")); 
         title.setIcon(new ImageIcon("src/main/java/icons/favicon.png")); 
+        btn_back.setIcon(new ImageIcon("src/main/java/icons/back_disabled.png")); 
         
         initCar();
         
@@ -182,15 +183,15 @@ public class Cart extends javax.swing.JFrame {
     }//GEN-LAST:event_close_btnActionPerformed
 
     private void btn_backMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseEntered
-        // TODO add your handling code here:
+        btn_back.setIcon(new ImageIcon("src/main/java/icons/back_enabled.png"));
     }//GEN-LAST:event_btn_backMouseEntered
 
     private void btn_backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseExited
-        // TODO add your handling code here:
+        btn_back.setIcon(new ImageIcon("src/main/java/icons/back_disabled.png"));
     }//GEN-LAST:event_btn_backMouseExited
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btn_backActionPerformed
 
     void initCar(){
