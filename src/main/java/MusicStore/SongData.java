@@ -7,10 +7,12 @@ public class SongData implements Serializable {
     String Name;
     String Artist;
     ImageIcon image;
+    String path;
     int Price;
     int index;
 
-    public SongData(String Name, String Artist, ImageIcon image, int Price, int Index) {
+    public SongData(String Path, String Name, String Artist, ImageIcon image, int Price, int Index) {
+        this.path = Path;
         this.Name = Name;
         this.Artist = Artist;
         this.image = image;
@@ -24,6 +26,14 @@ public class SongData implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
     
     

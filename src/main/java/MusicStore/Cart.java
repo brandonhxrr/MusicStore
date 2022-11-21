@@ -202,7 +202,7 @@ public class Cart extends javax.swing.JFrame {
         if(!Main.carrito.isEmpty()) {
             for(SongData son : Main.carrito) {
                 
-                SongCart songCart = new SongCart(son.getName(), son.getArtist(), son.getImage(), son.getPrice(), son.getIndex());
+                SongCart songCart = new SongCart(son);
                 
                 songCart.getBtnClose().addActionListener((ActionEvent e) -> {
                     carrito.remove(son);

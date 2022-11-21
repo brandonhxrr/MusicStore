@@ -1,63 +1,23 @@
 package MusicStore;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import org.jaudiotagger.tag.TagField;
 
 public class SongCart extends javax.swing.JPanel {
     
-    String name;
-    String artist;
-    int index;
-    int price;
+    SongData data;
     
-    public SongCart(String Name,  String Artist, ImageIcon image, int Price, int Index) {
+    public SongCart(SongData songData) {
         initComponents();
-        this.name = Name;
-        this.price = Price;
-        this.artist = Artist;
-        this.index = Index;
         
-        songName.setText(name);
-        songArtist.setText(artist);
-        songPrice.setText("$ " + price + " MXN");
-        songImage.setIcon(image);
+        this.data = songData;
+        
+        songName.setText(data.getName());
+        songArtist.setText(data.getArtist());
+        songPrice.setText("$ " + String.valueOf(data.getPrice()) + " MXN");
+        songImage.setIcon(data.getImage());
         
         close_btn.setIcon(new ImageIcon("src/main/java/icons/delete_disabled.png"));
-    }
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-    
-    
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public JButton getBtnClose() {

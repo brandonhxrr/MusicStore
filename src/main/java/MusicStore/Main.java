@@ -213,7 +213,7 @@ public class Main extends javax.swing.JFrame {
             canciones = (List) ois.readObject();
             
             for(SongData son : canciones){
-                Song s = new Song(son.getName(), son.getArtist(), son.getImage(), son.getPrice());
+                Song s = new Song(son);
                 songs.add(s);
                 songs.updateUI();
                 

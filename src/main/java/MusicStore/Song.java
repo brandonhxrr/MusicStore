@@ -1,51 +1,22 @@
 package MusicStore;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import org.jaudiotagger.tag.TagField;
 
 public class Song extends javax.swing.JPanel {
     
-    String name;
-    String artist;
+    SongData data;
     
-    public Song(String Name,  String Artist, ImageIcon image, int Price) {
+    public Song(SongData songData) {
         initComponents();
-        this.name = Name;
-        this.price = Price;
-        this.artist = Artist;
         
-        songName.setText(name);
-        songArtist.setText(artist);
-        songPrice.setText("$ " + price + " MXN");
-        songImage.setIcon(image);
+        this.data = songData;
+        
+        songName.setText(data.getName());
+        songArtist.setText(data.getArtist());
+        songPrice.setText("$ " + String.valueOf(data.getPrice()) + " MXN");
+        songImage.setIcon(data.getImage());
     }
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-    int price;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
+    
     public JButton getBtnAdd() {
         return btnAdd;
     }

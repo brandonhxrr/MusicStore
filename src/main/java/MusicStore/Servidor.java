@@ -1,23 +1,13 @@
 package MusicStore;
 
-import static MusicStore.Main.carrito;
 import static MusicStore.Main.icon;
-import java.awt.event.ActionEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.StandardSocketOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -58,7 +48,7 @@ public class Servidor {
                     Tag tag = af.getTag();
                     icon = getArtwork(tag);
                     
-                    canciones.add(new SongData(tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST), icon, i, i));
+                    canciones.add(new SongData(fichero.getAbsolutePath(), tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST), icon, i, i));
                     i++;
                 }
                 
