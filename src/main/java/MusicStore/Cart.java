@@ -3,6 +3,12 @@ package MusicStore;
 import static MusicStore.Main.carrito;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 public class Cart extends javax.swing.JFrame {
@@ -32,6 +38,7 @@ public class Cart extends javax.swing.JFrame {
         scroll = new javax.swing.JScrollPane();
         songs = new javax.swing.JPanel();
         btn_back = new javax.swing.JButton();
+        sub = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -103,6 +110,9 @@ public class Cart extends javax.swing.JFrame {
             }
         });
 
+        sub.setFont(new java.awt.Font("Leelawadee UI", 0, 18)); // NOI18N
+        sub.setText("Carrito vacío");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -110,8 +120,11 @@ public class Cart extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
-                    .addComponent(btnFinish))
+                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(sub, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFinish)))
                 .addGap(51, 51, 51))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
@@ -132,9 +145,11 @@ public class Cart extends javax.swing.JFrame {
                     .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(btnFinish)
-                .addGap(37, 37, 37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnFinish, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(sub, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,7 +168,13 @@ public class Cart extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
-
+        try {
+            downloadFiles();
+            Main.carrito.clear();
+            this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnFinishActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
@@ -196,6 +217,8 @@ public class Cart extends javax.swing.JFrame {
 
     void initCar(){
         
+        int total = 0;
+        
         songs.removeAll();
         songs.repaint();
         
@@ -204,12 +227,47 @@ public class Cart extends javax.swing.JFrame {
                 
                 SongCart songCart = new SongCart(son);
                 
+                total += son.getPrice();
+                
                 songCart.getBtnClose().addActionListener((ActionEvent e) -> {
                     carrito.remove(son);
                     initCar();
                 });
                 songs.add(songCart);
                 songs.updateUI();
+                
+                sub.setText("Subtotal: $" + String.valueOf(total) + " MXN");
+                
+            }
+        }
+    }
+    
+     void downloadFiles() throws FileNotFoundException, IOException{
+        
+        
+        if(!carrito.isEmpty()){
+            for(SongData son : carrito){
+                
+                String homeUsuario = System.getProperty("user.home") + "\\MusicStore";
+                
+                File ruta1 = new File(homeUsuario);
+                if(!ruta1.exists()){
+                    ruta1.mkdir();
+                }
+                System.out.println(homeUsuario);
+        
+                File ruta = new File(homeUsuario+"\\"+son.getName().trim()+".mp3");
+                ruta.createNewFile();
+        
+                FileOutputStream fout = new FileOutputStream(ruta);
+                
+                byte b[] =son.getFileContent();
+                
+                System.out.println("Escrito en: "+ ruta.getAbsolutePath());
+                fout.write(b);
+                fout.flush();
+                fout.close();
+                
             }
         }
     }
@@ -249,6 +307,7 @@ public class Cart extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JPanel songs;
+    private javax.swing.JLabel sub;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

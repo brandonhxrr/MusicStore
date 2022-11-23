@@ -1,26 +1,19 @@
 package MusicStore;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 
 public class Main extends javax.swing.JFrame {
     
@@ -173,7 +166,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnViewCartActionPerformed
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
-
+        
+        
     }//GEN-LAST:event_btnFinishActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
@@ -224,8 +218,6 @@ public class Main extends javax.swing.JFrame {
                     
                 });
             }
-            
-            
             System.out.println("Objeto recibido desde " + cl.getInetAddress() + ":" + cl.getPort() + " con los datos:");
             
             ois.close();
@@ -234,6 +226,8 @@ public class Main extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+   
         
     public ImageIcon getArtwork(Tag tag) {
         ImageIcon artwork;

@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import javax.swing.ImageIcon;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -16,7 +15,6 @@ import org.jaudiotagger.tag.Tag;
 
 public class Servidor {
 
-    private static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
 
@@ -43,12 +41,11 @@ public class Servidor {
                     
                     Song s = null;
                     
-
                     AudioFile af = AudioFileIO.read(fichero);
                     Tag tag = af.getTag();
                     icon = getArtwork(tag);
                     
-                    canciones.add(new SongData(fichero.getAbsolutePath(), tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST), icon, i, i));
+                    canciones.add(new SongData(tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST), icon, i, i, fichero));
                     i++;
                 }
                 
@@ -56,7 +53,7 @@ public class Servidor {
 
                 oos.flush();
                 System.out.println("Cliente conectado.. Enviando objeto con los datos\nX:");
-
+               
                 oos.close();
                 cl.close();
             }  

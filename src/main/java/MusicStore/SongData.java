@@ -1,18 +1,21 @@
 package MusicStore;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import javax.swing.ImageIcon;
 
 public class SongData implements Serializable {
     String Name;
     String Artist;
     ImageIcon image;
-    String path;
+    byte[] fileContent;
     int Price;
     int index;
 
-    public SongData(String Path, String Name, String Artist, ImageIcon image, int Price, int Index) {
-        this.path = Path;
+    public SongData(String Name, String Artist, ImageIcon image, int Price, int Index, File file) throws IOException {
+        this.fileContent = Files.readAllBytes(file.toPath());
         this.Name = Name;
         this.Artist = Artist;
         this.image = image;
@@ -28,16 +31,14 @@ public class SongData implements Serializable {
         this.index = index;
     }
 
-    public String getPath() {
-        return path;
+    public byte[] getFileContent() {
+        return fileContent;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
     }
-    
-    
-    
+
     public String getName() {
         return Name;
     }

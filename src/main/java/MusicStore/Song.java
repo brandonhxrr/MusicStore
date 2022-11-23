@@ -16,6 +16,16 @@ public class Song extends javax.swing.JPanel {
         songPrice.setText("$ " + String.valueOf(data.getPrice()) + " MXN");
         songImage.setIcon(data.getImage());
     }
+
+    public SongData getData() {
+        return data;
+    }
+
+    public void setData(SongData data) {
+        this.data = data;
+    }
+    
+    
     
     public JButton getBtnAdd() {
         return btnAdd;

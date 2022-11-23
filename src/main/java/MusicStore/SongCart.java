@@ -20,6 +20,16 @@ public class SongCart extends javax.swing.JPanel {
         close_btn.setIcon(new ImageIcon("src/main/java/icons/delete_disabled.png"));
     }
 
+    public SongData getData() {
+        return data;
+    }
+
+    public void setData(SongData data) {
+        this.data = data;
+    }
+    
+    
+
     public JButton getBtnClose() {
         return close_btn;
     }
